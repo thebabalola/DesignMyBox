@@ -1,0 +1,13 @@
+/* Swiper Styles (for future use) */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #797979; /* light-grey */
+}
+
+.swiper-pagination-bullet {
+  background: #38383D; /* medium-grey */
+}
+
+.swiper-pagination-bullet-active {
+  background: #2B59B0; /* primary-blue */
+}
