@@ -90,7 +90,7 @@ const About = () => {
           >
             <div className="relative group">
               <img 
-                src="/src/assets/images/about-me-removebg.png" 
+                src="/public/about-me-removebg.png" 
                 alt="Profile" 
                 className="relative w-80 h-80 object-cover shadow-2xl hover:scale-105 transition-all duration-500 animate-breathing"
                 // className="relative w-80 h-80 object-cover rounded-full shadow-2xl hover:scale-105 transition-all duration-500 animate-breathing"
