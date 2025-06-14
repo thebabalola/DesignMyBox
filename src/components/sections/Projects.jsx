@@ -79,9 +79,39 @@ const Projects = () => {
     <section
       id="projects"
       ref={sectionRef}
-      className="py-20 bg-darkest-bg/80 animate-on-scroll"
+      className="py-20 bg-darkest-bg/80 relative overflow-hidden animate-on-scroll"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Abstract Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated Lines */}
+        <div className="absolute top-20 left-10 w-32 h-px bg-gradient-to-r from-transparent via-primary-blue/30 to-transparent animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-24 h-px bg-gradient-to-r from-transparent via-deep-blue/40 to-transparent animate-pulse delay-300"></div>
+        <div className="absolute bottom-32 left-1/4 w-40 h-px bg-gradient-to-r from-transparent via-primary-blue/25 to-transparent animate-pulse delay-700"></div>
+        
+        {/* Geometric Shapes */}
+        <div className="absolute top-16 right-10 w-3 h-3 border border-primary-blue/30 rotate-45 animate-spin-slow"></div>
+        <div className="absolute top-1/2 left-8 w-4 h-4 border border-deep-blue/40 rotate-45 animate-pulse delay-500"></div>
+        <div className="absolute bottom-20 right-1/3 w-2 h-2 border border-primary-blue/35 rotate-45 animate-bounce-slow"></div>
+        
+        {/* Abstract Circles */}
+        <div className="absolute top-1/3 left-1/2 w-32 h-32 border border-primary-blue/10 rounded-full animate-ping-slow"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-24 h-24 border border-deep-blue/15 rounded-full animate-pulse delay-1000"></div>
+        
+        {/* Diagonal Lines
+        <div className="absolute top-0 left-1/3 w-px h-20 bg-gradient-to-b from-transparent via-primary-blue/20 to-transparent transform rotate-12 animate-pulse delay-200"></div>
+        <div className="absolute bottom-0 right-1/4 w-px h-16 bg-gradient-to-t from-transparent via-deep-blue/25 to-transparent transform -rotate-12 animate-pulse delay-600"></div> */}
+        
+        {/* Tech-inspired Grid Pattern */}
+        <div className="absolute top-1/4 right-1/4 opacity-10">
+          <div className="grid grid-cols-4 gap-2">
+            {Array.from({ length: 16 }).map((_, i) => (
+              <div key={i} className="w-1 h-1 bg-primary-blue rounded-full animate-pulse" style={{ animationDelay: `${i * 100}ms` }}></div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mb-16 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-light-grey mb-4">My Projects</h2>
           <p className="text-lg text-light-grey max-w-2xl mx-auto">Explore some of my best work in web and blockchain development</p>
@@ -138,6 +168,26 @@ const Projects = () => {
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        @keyframes ping-slow {
+          0% { transform: scale(1); opacity: 1; }
+          75%, 100% { transform: scale(2); opacity: 0; }
+        }
+        
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+        
+        .animate-ping-slow {
+          animation: ping-slow 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+      `}</style>
     </section>
   );
 };

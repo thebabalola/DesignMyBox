@@ -50,7 +50,7 @@ const About = () => {
           >
             <div className="space-y-4">
               <p className="text-base text-light-grey leading-relaxed">
-                I'm a Frontend and Blockchain Developer based in Lagos, Nigeria, with two years + of hands-on experience building responsive web and decentralized applications.
+                I'm a Frontend and Blockchain Developer based in Lagos, Nigeria, with two years + of hands on experience building responsive web and decentralized applications.
               </p>
               <p className="text-base text-light-grey leading-relaxed">
                 My strengths lie in creating clean, maintainable code and integrating smart contracts into modern UIs using tools like React, Next.js, and Solidity. I've built and deployed dApps on Ethereum, Base, and Lisk, focusing on secure, scalable solutions.
