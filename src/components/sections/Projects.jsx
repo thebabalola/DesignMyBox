@@ -51,7 +51,7 @@ const Projects = () => {
     {
       title: 'StrataForge',
       description: 'A no-code platform for deploying ERC20, ERC721, and ERC1155 tokens with features like airdrops and campaign management.',
-      image: '/public/strataforge.jpg',
+      image: '/strataforge.jpg',
       technologies: ['React', 'Solidity', 'Web3', 'Tailwind CSS'],
       github: 'https://github.com/thebabalola/strataforge-frontend',
       demo: 'https://strataforge-demo.netlify.app',
@@ -59,7 +59,7 @@ const Projects = () => {
     {
       title: 'Propty-Bridge',
       description: 'A dynamic real estate platform with intuitive UI/UX, optimized for performance and accessibility.',
-      image: '/public/propty-bridge.jpg',
+      image: '/propty-bridge.jpg',
       technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
       github: 'https://github.com/yourusername/propty-bridge',
       demo: 'https://propty-bridge-demo.vercel.app',
@@ -67,7 +67,7 @@ const Projects = () => {
     {
       title: 'Interior Designer Portfolio',
       description: 'A comprehensive interior design portfolio showcasing modern aesthetics with seamless user experience.',
-      image: '/public/Interior-portfolio.jpg',
+      image: '/Interior-portfolio.jpg',
       technologies: ['React', 'JavaScript', 'Tailwind CSS', 'Vite'],
       github: 'https://github.com/yourusername/interior-portfolio',
       demo: 'https://interior-portfolio-demo.netlify.app',
@@ -75,7 +75,7 @@ const Projects = () => {
     {
       title: 'E-Commerce Dashboard',
       description: 'A comprehensive admin dashboard for e-commerce management with analytics and inventory tracking.',
-      image: '/public/ecommerce-dashboard.jpg',
+      image: '/ecommerce-dashboard.jpg',
       technologies: ['React', 'Node.js', 'MongoDB', 'Chart.js'],
       github: 'https://github.com/yourusername/ecommerce-dashboard',
       demo: 'https://ecommerce-dashboard-demo.netlify.app',
@@ -83,7 +83,7 @@ const Projects = () => {
     {
       title: 'Weather Forecast App',
       description: 'A responsive weather application with real-time data and interactive maps.',
-      image: '/public/weather-app.jpg',
+      image: '/weather-app.jpg',
       technologies: ['React', 'OpenWeather API', 'Tailwind CSS', 'Chart.js'],
       github: 'https://github.com/yourusername/weather-app',
       demo: 'https://weather-forecast-demo.netlify.app',
@@ -91,7 +91,7 @@ const Projects = () => {
     {
       title: 'Social Media Analytics',
       description: 'A powerful analytics tool for social media performance tracking and insights.',
-      image: '/public/social-analytics.jpg',
+      image: '/social-analytics.jpg',
       technologies: ['React', 'D3.js', 'Node.js', 'PostgreSQL'],
       github: 'https://github.com/yourusername/social-analytics',
       demo: 'https://social-analytics-demo.vercel.app',
