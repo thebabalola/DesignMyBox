@@ -1,13 +1,23 @@
 import { useEffect, useRef } from 'react';
+import { Briefcase, Users } from 'lucide-react';
 
 const About = () => {
   const sectionRef = useRef(null);
+  const leftContentRef = useRef(null);
+  const rightContentRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
+          // Trigger animations for content
+          if (leftContentRef.current) {
+            leftContentRef.current.classList.add('slide-in-left');
+          }
+          if (rightContentRef.current) {
+            rightContentRef.current.classList.add('slide-in-right');
+          }
         }
       },
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
@@ -17,67 +27,103 @@ const About = () => {
     return () => observer.disconnect();
   }, []);
 
+  const stats = [
+    { number: "2+", label: "Years Experience", icon: Briefcase },
+    { number: "15+", label: "Projects Completed", icon: Users }
+  ];
+
   return (
-    <section id="about" ref={sectionRef} className="py-20 bg-dark-accent/30 animate-on-scroll">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-light-grey mb-4">About Me</h2>
-          <p className="text-lg text-light-grey max-w-2xl mx-auto">Get to know me better</p>
-          <div className="w-20 h-1 bg-primary-blue mx-auto mt-6 rounded-full"></div>
+    <section id="about" ref={sectionRef} className="py-16 bg-dark-accent/30 animate-on-scroll relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-20 sm:px-24 lg:px-28 relative">
+        <div className="mb-12 text-center">
+          <p className="text-xl text-light-grey max-w-2xl mx-auto animate-fade-in">
+            Get to know me better
+          </p>
+          <div className="w-20 h-1 bg-gradient-to-r from-primary-blue to-deep-blue mx-auto mt-4 rounded-full animate-slide-up"></div>
         </div>
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <p className="text-lg text-light-grey leading-relaxed">
-              I'm a dedicated Frontend and Blockchain Developer based in Lagos, Nigeria, with over four years of experience building responsive, user-centric web and decentralized applications.
-            </p>
-            <p className="text-lg text-light-grey leading-relaxed">
-              My approach combines technical excellence with strong problem-solving and communication skills, delivering clean, maintainable code that exceeds expectations.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary-blue rounded-full"></div>
-                <span className="text-light-grey">4+ years of Frontend & Blockchain development</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary-blue rounded-full"></div>
-                <span className="text-light-grey">Expert in React, Next.js, and modern web technologies</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary-blue rounded-full"></div>
-                <span className="text-light-grey">Specialized in secure smart contract development</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary-blue rounded-full"></div>
-                <span className="text-light-grey">Based in Lagos, Nigeria - available for remote work</span>
-              </div>
+
+        <div className="grid lg:grid-cols-2 gap-4 items-center">
+          {/* Left Content */}
+          <div 
+            ref={leftContentRef}
+            className="space-y-6 opacity-0 transform translate-x-[-50px] transition-all duration-1000 ease-out"
+          >
+            <div className="space-y-4">
+              <p className="text-base text-light-grey leading-relaxed">
+                I'm a Frontend and Blockchain Developer based in Lagos, Nigeria, with two years + of hands-on experience building responsive web and decentralized applications.
+              </p>
+              <p className="text-base text-light-grey leading-relaxed">
+                My strengths lie in creating clean, maintainable code and integrating smart contracts into modern UIs using tools like React, Next.js, and Solidity. I've built and deployed dApps on Ethereum, Base, and Lisk, focusing on secure, scalable solutions.
+              </p>
+              <p className="text-base text-light-grey leading-relaxed">
+                I'm passionate about learning, building, and solving real-world problems and I'm open to remote opportunities or collaborations.
+              </p>
             </div>
-            <div className="grid grid-cols-2 gap-6 pt-6">
-              <div className="text-center p-4 bg-dark-accent/50 rounded-lg">
-                <div className="text-2xl font-bold text-primary-blue">4+</div>
-                <div className="text-light-grey">Years Experience</div>
-              </div>
-              <div className="text-center p-4 bg-dark-accent/50 rounded-lg">
-                <div className="text-2xl font-bold text-primary-blue">10+</div>
-                <div className="text-light-grey">Projects Completed</div>
-              </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              {stats.map((stat, index) => (
+                <div 
+                  key={index}
+                  className="flex items-center space-x-2 p-2 bg-dark-accent/50 rounded-lg border border-primary-blue/10 hover:border-primary-blue/30 hover:bg-dark-accent/70 transition-all duration-300 group"
+                >
+                  <div className="w-6 h-6 border-2 border-primary-blue rounded-full flex items-center justify-center group-hover:border-deep-blue transition-colors duration-300 flex-shrink-0">
+                    <stat.icon className="w-3 h-3 text-primary-blue group-hover:text-deep-blue transition-colors duration-300" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-lg font-bold text-primary-blue group-hover:text-deep-blue transition-colors duration-300 flex items-center gap-1">
+                      <span>{stat.number}</span>
+                      <span className="text-light-grey text-xs group-hover:text-white transition-colors duration-300">
+                        {stat.label}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <div>
-            <div className="relative">
-              <div className="w-full h-96 bg-gradient-to-br from-dark-accent to-deep-blue rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-32 h-32 bg-primary-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-4xl">👨‍💻</span>
-                  </div>
-                  <p className="text-light-grey">Professional Photo</p>
-                </div>
-              </div>
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-primary-blue/20 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-deep-blue/30 rounded-full blur-xl"></div>
+
+          {/* Right Content - Profile Image */}
+          <div 
+            ref={rightContentRef}
+            className="flex justify-center lg:justify-end opacity-0 transform translate-x-[50px] transition-all duration-1000 ease-out"
+          >
+            <div className="relative group">
+              <img 
+                src="/src/assets/images/about-me-removebg.png" 
+                alt="Profile" 
+                className="relative w-80 h-80 object-cover shadow-2xl hover:scale-105 transition-all duration-500 animate-breathing"
+                // className="relative w-80 h-80 object-cover rounded-full shadow-2xl hover:scale-105 transition-all duration-500 animate-breathing"
+              />
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .slide-in-left {
+          opacity: 1 !important;
+          transform: translateX(0) !important;
+        }
+        
+        .slide-in-right {
+          opacity: 1 !important;
+          transform: translateX(0) !important;
+        }
+
+        @keyframes breathing {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+
+        .animate-breathing {
+          animation: breathing 3s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 };
