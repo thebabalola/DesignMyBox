@@ -1,106 +1,82 @@
-import { useEffect, useRef } from 'react';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
-  const backToTopRef = useRef(null);
-
-  const handleSmoothScroll = (e, targetId) => {
-    e.preventDefault();
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-      const headerHeight = document.querySelector('#header').offsetHeight;
-      const targetPosition = targetElement.offsetTop - headerHeight;
-      window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    const updateBackToTop = () => {
-      const currentScrollY = window.scrollY;
-      backToTopRef.current.style.opacity = currentScrollY > 300 ? '1' : '0';
-      backToTopRef.current.style.transform = currentScrollY > 300 ? 'translateY(0)' : 'translateY(20px)';
-    };
-
-    window.addEventListener('scroll', updateBackToTop);
-    return () => window.removeEventListener('scroll', updateBackToTop);
-  }, []);
-
   const footerLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
+    { label: 'About Us', path: '/about-us' },
+    { label: 'Our Services', path: '/services' },
+    { label: 'Portfolio', path: '/catalog' },
+    { label: 'Process', path: '/contact-us#process' },
+    { label: 'Contact', path: '/contact-us' },
+    { label: 'Privacy Policy', path: '/privacy-policy' },
+    { label: 'Terms of Service', path: '/terms-of-service' },
+  ];
+
+  const services = [
+    'Interior Design',
+    'Custom Furniture',
+    'Space Planning',
+    'Renovations',
+    'Consultations',
   ];
 
   return (
-    <footer className="bg-dark-accent/95 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left md:items-start">
-          <div className="flex flex-col justify-start">
-            <h3 className="text-xl font-bold gradient-text">Babalola Taiwo</h3>
-            <p className="text-light-grey mt-2">Frontend & Blockchain Developer</p>
+    <footer className="bg-forest-night text-pale-stone-grey py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 className="text-xl font-bold mb-4">Design My Box</h3>
+            <p className="text-sm">
+              Where Your Story Deserves a Space That Shines
+            </p>
+            <p className="text-sm mt-2">
+              © 2025 Design My Box. All rights reserved.
+            </p>
+            <p className="text-sm">
+              CAC Registration: RN 3501629
+            </p>
           </div>
-          <div className="flex flex-col justify-start">
-            <h4 className="text-lg font-semibold text-light-grey mb-4">Quick Links</h4>
-            <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
-              {footerLinks.map((link, index) => (
-                <div key={link.name} className="flex items-center">
-                  <button
-                    onClick={(e) => handleSmoothScroll(e, link.href)}
-                    className="text-light-grey hover:text-primary-blue"
+          <div>
+            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              {footerLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.path}
+                    className="text-sm text-pale-stone-grey hover:text-antique-gold transition-colors"
                   >
-                    {link.name}
-                  </button>
-                  {index < footerLinks.length - 1 && (
-                    <span className="text-medium-grey mx-2">|</span>
-                  )}
-                </div>
+                    {link.label}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
-          <div className="flex flex-col items-center text-center">
-            <h4 className="text-lg font-semibold text-light-grey mb-4">Connect</h4>
-            <div className="flex justify-center md:justify-start space-x-6">
-              <a
-                href="https://github.com/thebabalola"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-light-grey hover:text-primary-blue transition-all hover:scale-110"
-                title="GitHub"
-              >
-                <Github className="w-6 h-6" />
+          <div>
+            <h3 className="text-xl font-bold mb-4">Services</h3>
+            <ul className="space-y-2">
+              {services.map((service) => (
+                <li key={service}>
+                  <span className="text-sm">{service}</span>
+                </li>
+              ))}
+            </ul>
+            <h3 className="text-xl font-bold mt-6 mb-4">Contact</h3>
+            <p className="text-sm">HUB 17, 17 Jibowu Street, Yaba, Lagos</p>
+            <p className="text-sm">08121223631 | 09096819846</p>
+            <p className="text-sm">hello@designmybox.com.ng</p>
+            <div className="flex space-x-4 mt-4">
+              <a href="[Instagram URL]" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="text-2xl text-ivory-mist hover:text-antique-gold transition-colors glow-effect" />
               </a>
-              <a
-                href="https://linkedin.com/in/babalola-taiwo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-light-grey hover:text-primary-blue transition-all hover:scale-110"
-                title="LinkedIn"
-              >
-                <Linkedin className="w-6 h-6" />
+              <a href="[Facebook URL]" target="_blank" rel="noopener noreferrer">
+                <FaFacebook className="text-2xl text-ivory-mist hover:text-antique-gold transition-colors glow-effect" />
               </a>
-              <a
-                href="mailto:t.babalolajoseph@gmail.com"
-                className="text-light-grey hover:text-primary-blue transition-all hover:scale-110"
-                title="Email"
-              >
-                <Mail className="w-6 h-6" />
+              <a href="https://wa.me/2349096819846" target="_blank" rel="noopener noreferrer">
+                <FaWhatsapp className="text-2xl text-ivory-mist hover:text-antique-gold transition-colors glow-effect" />
               </a>
             </div>
           </div>
-        </div>
-        <div className="mt-12 pt-8 border-t border-medium-grey/30 text-center">
-          <p className="text-light-grey">© 2025 Babalola Taiwo. All rights reserved.</p>
-          <button
-            id="back-to-top"
-            ref={backToTopRef}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="mt-4 text-primary-blue hover:text-primary-blue/80"
-            style={{ opacity: 0, transform: 'translateY(20px)', transition: 'all 0.3s' }}
-          >
-            Back to Top ↑
-          </button>
         </div>
       </div>
     </footer>

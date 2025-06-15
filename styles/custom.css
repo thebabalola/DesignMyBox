@@ -1,13 +1,18 @@
-/* Swiper Styles (for future use) */
+/* Swiper Custom Styles */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #797979; /* light-grey */
+  color: #F6F3E8; /* ivory-mist */
 }
-
 .swiper-pagination-bullet {
-  background: #38383D; /* medium-grey */
+  background: #707C5B; /* olive-slate */
+}
+.swiper-pagination-bullet-active {
+  background: #C79340; /* antique-gold */
 }
 
-.swiper-pagination-bullet-active {
-  background: #2B59B0; /* primary-blue */
+/* Additional Custom Styles */
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 5px rgba(199, 147, 64, 0.5); /* antique-gold */
 }

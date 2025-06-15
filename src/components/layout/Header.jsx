@@ -1,64 +1,68 @@
-import { useEffect, useRef, useState } from 'react';
-import { Home, User, Zap, Rocket, Mail } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { HiMenu, HiX, HiPhone } from 'react-icons/hi';
+import { FaHome, FaUser, FaCog, FaBook, FaEnvelope } from 'react-icons/fa';
 
 const Header = () => {
-  const headerRef = useRef(null);
-  const mobileMenuButtonRef = useRef(null);
-  const mobileMenuRef = useRef(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const headerRef = useRef(null);
+  const location = useLocation();
 
-  // Smooth scrolling
-  const handleSmoothScroll = (e, targetId) => {
+  // Smooth scrolling function
+  const handleSmoothScroll = (e, href, isRoute) => {
+    if (isRoute) {
+      // Handle route navigation normally
+      return;
+    }
+    
+    // Check if we're not on the home page, then navigate to home first
+    if (location.pathname !== '/' && location.pathname !== '') {
+      // Navigate to home page with hash
+      window.location.href = `/${href}`;
+      return;
+    }
+    
     e.preventDefault();
-    const targetElement = document.querySelector(targetId);
+    const targetElement = document.querySelector(href);
     if (targetElement) {
-      const headerHeight = headerRef.current.offsetHeight;
-      const targetPosition = targetElement.offsetTop - headerHeight;
-      window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
+      const headerHeight = headerRef.current ? headerRef.current.offsetHeight : 80;
+      const targetPosition = targetElement.offsetTop - headerHeight - 20; // Extra 20px padding
+      window.scrollTo({ 
+        top: targetPosition, 
+        behavior: 'smooth' 
+      });
+      setMobileMenuOpen(false);
     }
   };
 
-  // Header behavior with enhanced animations
+  // Handle scroll effect
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const updateHeader = () => {
-      const currentScrollY = window.scrollY;
-      const header = headerRef.current;
-      
-      if (currentScrollY > 50) {
-        header.classList.add('backdrop-blur-xl', 'bg-darkest-bg/95', 'shadow-glow', 'border-b', 'border-primary-blue/20');
-        header.classList.remove('bg-darkest-bg/80');
-        header.style.transform = currentScrollY > lastScrollY && currentScrollY > 200 ? 'translateY(-100%)' : 'translateY(0)';
-      } else {
-        header.classList.remove('backdrop-blur-xl', 'bg-darkest-bg/95', 'shadow-glow', 'border-b', 'border-primary-blue/20');
-        header.classList.add('bg-darkest-bg/80');
-        header.style.transform = 'translateY(0)';
-      }
-      lastScrollY = currentScrollY;
-      ticking = false;
-    };
-
     const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(updateHeader);
-        ticking = true;
-      }
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Active section detection
+  // Close mobile menu when route changes
   useEffect(() => {
-    const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+    setMobileMenuOpen(false);
+  }, [location]);
+
+  // Active section detection (only run on home page)
+  useEffect(() => {
+    // Only detect sections when on home page
+    if (location.pathname !== '/' && location.pathname !== '') {
+      setActiveSection('');
+      return;
+    }
+
+    const sections = ['home', 'whychooseus', 'sub-catalog', 'contact'];
     const observerOptions = {
-      rootMargin: '-20% 0px -80% 0px',
-      threshold: 0
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -75,222 +79,261 @@ const Header = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
-
-  // Mobile menu animation
-  useEffect(() => {
-    const mobileMenu = mobileMenuRef.current;
-    if (isMobileMenuOpen) {
-      mobileMenu.style.display = 'block';
-      mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-      mobileMenu.style.opacity = '1';
-      mobileMenu.style.transform = 'translateY(0)';
-    } else {
-      mobileMenu.style.maxHeight = '0';
-      mobileMenu.style.opacity = '0';
-      mobileMenu.style.transform = 'translateY(-10px)';
-      setTimeout(() => {
-        if (!isMobileMenuOpen) {
-          mobileMenu.style.display = 'none';
-        }
-      }, 300);
-    }
-  }, [isMobileMenuOpen]);
+  }, [location.pathname]);
 
   const navLinks = [
-    { name: 'Home', href: '#home', icon: Home },
-    { name: 'About', href: '#about', icon: User },
-    { name: 'Skills', href: '#skills', icon: Zap },
-    { name: 'Projects', href: '#projects', icon: Rocket },
-    { name: 'Contact', href: '#contact', icon: Mail },
+    { label: 'Home', href: '/', icon: FaHome, isRoute: true },
+    { label: 'About Us', href: '#why-choose-us', icon: FaUser },
+    { label: 'Services', href: '#sub-catalog', icon: FaCog },
+    { label: 'Catalog', href: '/catalog', icon: FaBook, isRoute: true },
+    { label: 'Contact', href: '#contact', icon: FaEnvelope },
   ];
+
+  const isActiveLink = (href, isRoute) => {
+    if (isRoute) {
+      // For routes, check exact path match
+      if (href === '/') {
+        return location.pathname === '/' || location.pathname === '';
+      }
+      return location.pathname === href;
+    }
+    // For sections, only check if we're on the home page and the section is active
+    if (location.pathname !== '/' && location.pathname !== '') {
+      return false; // Don't highlight sections when not on home page
+    }
+    return activeSection === href.substring(1);
+  };
 
   return (
     <>
-      {/* Spacer to prevent content from hiding behind fixed header */}
-      <div className="h-4"></div>
+      {/* Background overlay for mobile menu */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-obsidian-black/80 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
       
-      <header
-        id="header"
-        ref={headerRef}
-        className="fixed top-4 left-4 right-4 z-50 transition-all duration-500 ease-out bg-darkest-bg/80 backdrop-blur-md rounded-2xl border border-dark-accent/50 shadow-card"
-        style={{
-          animation: 'slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards'
-        }}
-      >
-        {/* Animated background gradient */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-blue/5 via-transparent to-primary-blue/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-obsidian-black/95 backdrop-blur-md shadow-lg shadow-obsidian-black/20' 
+          : 'bg-obsidian-black shadow-sm'
+      }`} ref={headerRef}>
+        {/* Decorative top border */}
+        <div className="h-0.5 bg-gradient-to-r from-transparent via-antique-gold to-transparent opacity-60"></div>
         
-        {/* Floating particles effect */}
-        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-          <div className="absolute w-2 h-2 bg-primary-blue/30 rounded-full animate-float" style={{
-            top: '20%',
-            left: '10%',
-            animationDelay: '0s',
-            animationDuration: '6s'
-          }}></div>
-          <div className="absolute w-1 h-1 bg-light-grey/40 rounded-full animate-float" style={{
-            top: '60%',
-            right: '15%',
-            animationDelay: '2s',
-            animationDuration: '8s'
-          }}></div>
-          <div className="absolute w-1.5 h-1.5 bg-primary-blue/20 rounded-full animate-float" style={{
-            bottom: '30%',
-            left: '80%',
-            animationDelay: '4s',
-            animationDuration: '7s'
-          }}></div>
-        </div>
+        <div className="container mx-auto px-4 py-4 lg:py-6">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <Link 
+              to="/" 
+              className="group relative transition-transform duration-300 hover:scale-105"
+            >
+              <div className="relative">
+                <img 
+                  src="/DMB-logo.png" 
+                  alt="Design My Box Logo" 
+                  className="h-10 lg:h-12 rounded transition-all duration-300 group-hover:brightness-110" 
+                />
+                {/* Subtle glow effect on hover */}
+                <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-antique-gold blur-sm"></div>
+              </div>
+            </Link>
 
-        <nav className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex justify-between items-center h-16">
-            {/* Simple logo name */}
-            <div className="flex-shrink-0">
-              <button
-                onClick={(e) => handleSmoothScroll(e, '#home')}
-                className="text-2xl font-bold text-white hover:scale-105 transition-transform duration-300"
-              >
-                Babalola
-              </button>
-            </div>
-
-            {/* Desktop Navigation with enhanced styling */}
-            <div className="hidden md:flex ml-10 items-center space-x-2">
-              {navLinks.map((link) => (
-                <button
-                  key={link.name}
-                  onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className={`group relative px-4 py-2 rounded-xl transition-all duration-300 ${
-                    activeSection === link.href.substring(1) 
-                      ? 'text-primary-blue' 
-                      : 'text-light-grey hover:text-primary-blue'
-                  }`}
-                >
-                  <span className="relative z-10 font-medium text-sm flex items-center gap-2">
-                    <link.icon size={16} />
-                    {link.name}
-                  </span>
-                  
-                  {/* Hover effect background */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-blue/10 to-primary-blue/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                  
-                  {/* Active indicator */}
-                  {activeSection === link.href.substring(1) && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary-blue rounded-full animate-pulse"></div>
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {/* Enhanced Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                ref={mobileMenuButtonRef}
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="relative group p-3 rounded-xl text-light-grey hover:text-primary-blue hover:bg-primary-blue/10 transition-all duration-300"
-              >
-                {/* Animated hamburger icon */}
-                <div className="relative w-6 h-6 flex flex-col justify-center items-center">
-                  <span className={`block w-6 h-0.5 bg-current transition-all duration-300 ${
-                    isMobileMenuOpen ? 'rotate-45 translate-y-0.5' : ''
-                  }`}></span>
-                  <span className={`block w-6 h-0.5 bg-current transition-all duration-300 mt-1 ${
-                    isMobileMenuOpen ? 'opacity-0' : ''
-                  }`}></span>
-                  <span className={`block w-6 h-0.5 bg-current transition-all duration-300 mt-1 ${
-                    isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
-                  }`}></span>
-                </div>
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-3">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = isActiveLink(link.href, link.isRoute);
                 
-                {/* Hover effect */}
-                <div className="absolute inset-0 rounded-xl bg-primary-blue/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                return link.isRoute ? (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className={`group relative px-4 py-2 rounded-lg transition-all duration-300 ${
+                      isActive 
+                        ? 'text-antique-gold bg-antique-gold/10' 
+                        : 'text-ivory-mist hover:text-antique-gold hover:bg-olive-slate/10'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Icon className={`w-4 h-4 transition-all duration-300 ${
+                        isActive 
+                          ? 'text-antique-gold' 
+                          : 'text-olive-slate group-hover:text-antique-gold'
+                      }`} />
+                      <span className="font-medium text-sm lg:text-base">{link.label}</span>
+                    </div>
+                    
+                    {/* Active indicator */}
+                    <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-antique-gold transition-all duration-300 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}></div>
+                  </Link>
+                ) : (
+                  <button
+                    key={link.label}
+                    onClick={(e) => handleSmoothScroll(e, link.href, link.isRoute)}
+                    className={`group relative px-4 py-2 rounded-lg transition-all duration-300 ${
+                      isActive 
+                        ? 'text-antique-gold bg-antique-gold/10' 
+                        : 'text-ivory-mist hover:text-antique-gold hover:bg-olive-slate/10'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Icon className={`w-4 h-4 transition-all duration-300 ${
+                        isActive 
+                          ? 'text-antique-gold' 
+                          : 'text-olive-slate group-hover:text-antique-gold'
+                      }`} />
+                      <span className="font-medium text-sm lg:text-base">{link.label}</span>
+                    </div>
+                    
+                    {/* Active indicator */}
+                    <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-antique-gold transition-all duration-300 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}></div>
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Right side - Phone & Mobile Menu */}
+            <div className="flex items-center space-x-3 lg:space-x-4">
+              {/* Phone number */}
+              <a 
+                href="tel:08121235631" 
+                className="group hidden sm:flex items-center space-x-2 px-3 py-2 rounded-lg border border-antique-gold/30 text-antique-gold hover:bg-antique-gold hover:text-obsidian-black transition-all duration-300"
+              >
+                <HiPhone className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" />
+                <span className="font-medium text-sm">0812 123 5631</span>
+              </a>
+
+              {/* Mobile phone icon only */}
+              <a 
+                href="tel:08121235631" 
+                className="sm:hidden p-2 rounded-lg border border-antique-gold/30 text-antique-gold hover:bg-antique-gold hover:text-obsidian-black transition-all duration-300"
+              >
+                <HiPhone className="w-5 h-5" />
+              </a>
+
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 rounded-lg border border-olive-slate/30 text-ivory-mist hover:border-antique-gold hover:text-antique-gold transition-all duration-300 group"
+                aria-label="Toggle mobile menu"
+              >
+                <div className="relative w-6 h-6">
+                  <HiMenu className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                    isMobileMenuOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'
+                  }`} />
+                  <HiX className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
+                    isMobileMenuOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0'
+                  }`} />
+                </div>
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Enhanced Mobile Menu */}
-          <div
-            ref={mobileMenuRef}
-            className="md:hidden overflow-hidden transition-all duration-300 ease-out"
-            style={{ 
-              maxHeight: '0', 
-              opacity: '0',
-              transform: 'translateY(-10px)',
-              display: 'none'
-            }}
-          >
-            <div className="px-2 pt-4 pb-6 space-y-2 bg-dark-accent/50 backdrop-blur-md rounded-2xl mt-4 border border-primary-blue/20">
-              {navLinks.map((link, index) => (
-                <button
-                  key={link.name}
-                  onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className={`group relative w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center gap-3 ${
-                    activeSection === link.href.substring(1) 
-                      ? 'text-primary-blue' 
-                      : 'text-light-grey hover:text-primary-blue'
-                  }`}
-                  style={{
-                    animationDelay: `${index * 0.1}s`,
-                    animation: isMobileMenuOpen ? 'slideInLeft 0.3s ease-out forwards' : ''
-                  }}
-                >
-                  <link.icon size={18} />
-                  <span className="font-medium">{link.name}</span>
-                  
-                  {/* Hover effect */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                  
-                  {/* Active indicator for mobile */}
-                  {activeSection === link.href.substring(1) && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary-blue rounded-full animate-pulse"></div>
-                  )}
-                </button>
-              ))}
+        {/* Mobile Navigation */}
+        <nav className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          isMobileMenuOpen 
+            ? 'max-h-80 opacity-100' 
+            : 'max-h-0 opacity-0'
+        }`}>
+          <div className="px-4 py-4 bg-forest-night/95 backdrop-blur-sm border-t border-olive-slate/20">
+            <div className="space-y-2">
+              {navLinks.map((link, index) => {
+                const Icon = link.icon;
+                const isActive = isActiveLink(link.href, link.isRoute);
+                
+                return link.isRoute ? (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className={`group flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 transform ${
+                      isMobileMenuOpen 
+                        ? 'translate-x-0 opacity-100' 
+                        : 'translate-x-4 opacity-0'
+                    } ${
+                      isActive 
+                        ? 'bg-antique-gold/20 text-antique-gold border border-antique-gold/30' 
+                        : 'text-ivory-mist hover:bg-olive-slate/20 hover:text-antique-gold'
+                    }`}
+                    style={{ 
+                      transitionDelay: isMobileMenuOpen ? `${index * 50}ms` : '0ms' 
+                    }}
+                  >
+                    <div className={`p-2 rounded-lg border transition-all duration-300 ${
+                      isActive 
+                        ? 'border-antique-gold bg-antique-gold text-obsidian-black' 
+                        : 'border-olive-slate/30 group-hover:border-antique-gold group-hover:bg-antique-gold/10'
+                    }`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium">{link.label}</span>
+                    
+                    {/* Mobile active indicator */}
+                    {isActive && (
+                      <div className="ml-auto w-2 h-2 rounded-full bg-antique-gold animate-pulse"></div>
+                    )}
+                  </Link>
+                ) : (
+                  <button
+                    key={link.label}
+                    onClick={(e) => handleSmoothScroll(e, link.href, link.isRoute)}
+                    className={`group flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 transform w-full text-left ${
+                      isMobileMenuOpen 
+                        ? 'translate-x-0 opacity-100' 
+                        : 'translate-x-4 opacity-0'
+                    } ${
+                      isActive 
+                        ? 'bg-antique-gold/20 text-antique-gold border border-antique-gold/30' 
+                        : 'text-ivory-mist hover:bg-olive-slate/20 hover:text-antique-gold'
+                    }`}
+                    style={{ 
+                      transitionDelay: isMobileMenuOpen ? `${index * 50}ms` : '0ms' 
+                    }}
+                  >
+                    <div className={`p-2 rounded-lg border transition-all duration-300 ${
+                      isActive 
+                        ? 'border-antique-gold bg-antique-gold text-obsidian-black' 
+                        : 'border-olive-slate/30 group-hover:border-antique-gold group-hover:bg-antique-gold/10'
+                    }`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium">{link.label}</span>
+                    
+                    {/* Mobile active indicator */}
+                    {isActive && (
+                      <div className="ml-auto w-2 h-2 rounded-full bg-antique-gold animate-pulse"></div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            
+            {/* Mobile contact section */}
+            <div className="mt-4 pt-4 border-t border-olive-slate/20">
+              <a 
+                href="tel:08121235631" 
+                className="flex items-center justify-center space-x-2 w-full px-4 py-3 rounded-lg bg-antique-gold text-obsidian-black font-medium hover:bg-antique-gold/90 transition-all duration-300"
+              >
+                <HiPhone className="w-5 h-5" />
+                <span>Call: 0812 123 5631</span>
+              </a>
             </div>
           </div>
         </nav>
 
-        <style jsx>{`
-          @keyframes slideDown {
-            from {
-              opacity: 0;
-              transform: translateY(-20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          @keyframes slideInLeft {
-            from {
-              opacity: 0;
-              transform: translateX(-20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-
-          @keyframes float {
-            0%, 100% {
-              transform: translateY(0px) rotate(0deg);
-            }
-            33% {
-              transform: translateY(-10px) rotate(120deg);
-            }
-            66% {
-              transform: translateY(5px) rotate(240deg);
-            }
-          }
-
-          .animate-float {
-            animation: float 6s ease-in-out infinite;
-          }
-        `}</style>
+        {/* Subtle bottom border */}
+        <div className="h-px bg-gradient-to-r from-transparent via-olive-slate/30 to-transparent"></div>
       </header>
+
+      {/* Floating decorative elements */}
+      <div className="fixed top-20 left-4 w-2 h-16 bg-gradient-to-b from-antique-gold/20 to-transparent rounded-full opacity-40 pointer-events-none hidden lg:block"></div>
+      <div className="fixed top-32 right-8 w-1 h-12 bg-gradient-to-b from-olive-slate/30 to-transparent rounded-full opacity-60 pointer-events-none hidden lg:block"></div>
     </>
   );
 };

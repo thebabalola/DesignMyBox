@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', system-ui, sans-serif;
+  @apply bg-obsidian-black text-ivory-mist;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Glow Effect (Preserved) */
+.glow-effect {
+  box-shadow: 0 0 5px rgba(199, 147, 64, 0.5); /* antique-gold */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-effect:hover {
+  box-shadow: 0 0 15px rgba(199, 147, 64, 0.8); /* antique-gold */
+  transform: translateY(-4px);
+}
+
+.glow-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(199, 147, 64, 0.1) 50%, /* antique-gold */
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-effect:hover::before {
+  transform: translateX(100%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-forest-night;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #C79340, #707C5B); /* antique-gold to olive-slate */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #707C5B, #C79340); /* olive-slate to antique-gold */
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #C79340, #F6F3E8, #C79340); /* antique-gold to ivory-mist */
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Glass Effect */
+.glass-effect {
+  background: rgba(25, 36, 32, 0.15); /* forest-night with opacity */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(199, 147, 64, 0.3); /* antique-gold */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-effect:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(199, 147, 64, 0.2); /* antique-gold */
+}
+
+/* Button Enhancements */
+button, a[class*="bg-antique-gold"] {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after, a[class*="bg-antique-gold"]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%) skewX(-45deg);
+  transition: transform 0.6s ease;
+}
+
+button:hover::after, a[class*="bg-antique-gold"]:hover::after {
+  transform: translateX(100%) skewX(-45deg);
+}
+
+/* Form Enhancements */
+.input-focused {
+  position: relative;
+}
+
+.input-focused::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #C79340, #F6F3E8); /* antique-gold to ivory-mist */
+  animation: inputFocus 0.3s ease forwards;
+}
+
+@keyframes inputFocus {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Scroll Animation */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .glass-effect {
+    backdrop-filter: blur(5px);
+  }
+}
+
+/* High DPI Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .gradient-text {
+    -webkit-text-stroke: 0.5px transparent;
+  }
+}
