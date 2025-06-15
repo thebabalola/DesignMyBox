@@ -47,7 +47,7 @@ const ImageSlider = () => {
       {/* Faint Background Design Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Abstract geometric shapes */}
-                <div className="absolute top-20 right-10 w-24 h-24 border border-antique-gold/8 rounded-full"></div>
+        <div className="absolute top-20 right-10 w-24 h-24 border border-antique-gold/8 rounded-full"></div>
         <div className="absolute bottom-10 right-5 w-28 h-28 border border-antique-gold/10 rounded-full"></div>
 
         {/* Abstract lines */}
