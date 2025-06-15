@@ -49,6 +49,7 @@ const CatalogGrid = () => {
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
       className="py-12 bg-obsidian-black"
+      id = "catalog-grid"
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-center gap-4 mb-8">

@@ -34,6 +34,7 @@ const Stats = () => {
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
       className="py-12 bg-forest-night"
+      id='stats'
     >
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-ivory-mist text-center mb-8">
