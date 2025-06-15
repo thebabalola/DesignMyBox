@@ -123,11 +123,11 @@ const WhyChooseUs = () => {
                     </div>
                   </MotionDiv.div>
                   
-                  <h3 className="text-lg font-semibold text-ivory-mist mb-3 leading-tight group-hover:text-antique-gold transition-colors duration-300">
+                  <h3 className="text-lg font-semibold text-antique-gold mb-3 leading-tight">
                     {feature.title}
                   </h3>
                   
-                  <p className="text-xs leading-relaxed text-ivory-mist transition-colors duration-300">
+                  <p className="text-xs leading-relaxed text-ivory-mist">
                     {feature.description}
                   </p>
                 </div>
