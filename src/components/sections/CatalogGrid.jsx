@@ -202,13 +202,13 @@ const CatalogGrid = () => {
             Our Design
             <span className="text-antique-gold ml-3 relative">
               Portfolio
-              <MotionDiv.div
+              {/* <MotionDiv.div
                 className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-antique-gold to-transparent"
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 viewport={{ once: true }}
-              />
+              /> */}
             </span>
           </h2>
           <p className="text-lg text-olive-slate max-w-2xl mx-auto">
