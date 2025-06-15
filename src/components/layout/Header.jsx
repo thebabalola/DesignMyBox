@@ -122,7 +122,7 @@ const Header = () => {
         {/* Decorative top border */}
         <div className="h-0.5 bg-gradient-to-r from-transparent via-antique-gold to-transparent opacity-60"></div>
         
-        <div className="container mx-auto px-4 py-4 lg:py-6">
+        <div className="container mx-auto px-4 py-2 lg:py-3">
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link 
@@ -133,7 +133,7 @@ const Header = () => {
                 <img 
                   src="/DMB-logo.png" 
                   alt="Design My Box Logo" 
-                  className="h-10 lg:h-12 rounded transition-all duration-300 group-hover:brightness-110" 
+                  className="h-8 lg:h-10 rounded transition-all duration-300 group-hover:brightness-110" 
                 />
                 {/* Subtle glow effect on hover */}
                 <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-antique-gold blur-sm"></div>
@@ -150,7 +150,7 @@ const Header = () => {
                   <Link
                     key={link.label}
                     to={link.href}
-                    className={`group relative px-4 py-2 rounded-lg transition-all duration-300 ${
+                    className={`group relative px-3 py-1.5 rounded-lg transition-all duration-300 ${
                       isActive 
                         ? 'text-antique-gold bg-antique-gold/10' 
                         : 'text-ivory-mist hover:text-antique-gold hover:bg-olive-slate/10'
@@ -162,7 +162,7 @@ const Header = () => {
                           ? 'text-antique-gold' 
                           : 'text-olive-slate group-hover:text-antique-gold'
                       }`} />
-                      <span className="font-medium text-sm lg:text-base">{link.label}</span>
+                      <span className="font-medium text-xs lg:text-sm">{link.label}</span>
                     </div>
                     
                     {/* Active indicator */}
@@ -174,7 +174,7 @@ const Header = () => {
                   <button
                     key={link.label}
                     onClick={(e) => handleSmoothScroll(e, link.href, link.isRoute)}
-                    className={`group relative px-4 py-2 rounded-lg transition-all duration-300 ${
+                    className={`group relative px-3 py-1.5 rounded-lg transition-all duration-300 ${
                       isActive 
                         ? 'text-antique-gold bg-antique-gold/10' 
                         : 'text-ivory-mist hover:text-antique-gold hover:bg-olive-slate/10'
